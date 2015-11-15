@@ -20,14 +20,14 @@ __all__ = [
     "__name__",
     "__url__",
     "__version__",
-    ]
+]
 
 __author__ = "Vince Veselosky"
 __author_email__ = "vince@veselosky.com"
 __copyright__ = "2015 Vince Veselosky and contributors"
 __description__ = "A Jinja2 template loader for AWS S3."
 __license__ = "Apache 2.0"
-__name__ = "Jinja2 S3 Loader"
+__name__ = "jinja2_s3loader"
 __url__ = 'https://github.com/veselosky/jinja2_s3loader'
 __version__ = "0.1.0"
 
