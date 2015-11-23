@@ -16,16 +16,20 @@ from __future__ import absolute_import, print_function
 from jinja2 import BaseLoader, TemplateNotFound
 from botocore.exceptions import ClientError
 import boto3
+import posixpath as path
 
 
 class S3loader(BaseLoader):
     s3 = boto3.client('s3')
 
-    def __init__(self, bucket):
+    def __init__(self, bucket, prefix=''):
         self.bucket = bucket
+        self.prefix = prefix
         super(S3loader, self).__init__()
 
     def get_source(self, environment, template):
+        if self.prefix:
+            template = path.join(self.prefix, template)
         try:
             resp = self.s3.get_object(Bucket=self.bucket, Key=template)
         except ClientError as e:

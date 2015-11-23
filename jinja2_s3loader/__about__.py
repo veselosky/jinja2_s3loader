@@ -29,5 +29,5 @@ __description__ = "A Jinja2 template loader for AWS S3."
 __license__ = "Apache 2.0"
 __name__ = "jinja2_s3loader"
 __url__ = 'https://github.com/veselosky/jinja2_s3loader'
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 

@@ -32,7 +32,14 @@ def test_template_not_found():
 # What can I say, I was in a hurry. – Vince
 def test_template():
     j2 = Environment(loader=S3loader('bluebucket.mindvessel.net'))
-    t = j2.get_template('siteconfig.txt')
+    t = j2.get_template('_templates/test_template.j2')
+    assert isinstance(t, Template)
+    print(t.render({}))
+
+
+def test_prefix():
+    j2 = Environment(loader=S3loader('bluebucket.mindvessel.net', '_templates'))
+    t = j2.get_template('test_template.j2')
     assert isinstance(t, Template)
     print(t.render({}))
 
