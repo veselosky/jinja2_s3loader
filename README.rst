@@ -35,6 +35,11 @@ be different.
 
 Contributions welcome. File a Github issue to report a bug.
 
+Known Issues
+--------------------------------
+* The loader blindly attempts to decode all templates as UTF-8. If your template
+  is encoded with an incompatible encoding, it WILL be broken. PR's welcome.
+
 License
 --------------------------------
 

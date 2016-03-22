@@ -16,15 +16,30 @@ from __future__ import absolute_import, print_function
 from jinja2 import BaseLoader, TemplateNotFound
 from botocore.exceptions import ClientError
 import boto3
+from gzip import GzipFile
+from io import BytesIO
 import posixpath as path
 
 
-class S3loader(BaseLoader):
-    s3 = boto3.client('s3')
+def gzip(content, filename=None, compresslevel=9, mtime=None):
+    gzbuffer = BytesIO()
+    gz = GzipFile(filename, 'wb', compresslevel, gzbuffer, mtime)
+    gz.write(content)
+    gz.close()
+    return gzbuffer.getvalue()
 
-    def __init__(self, bucket, prefix=''):
+
+def gunzip(gzcontent):
+    gzbuffer = BytesIO(gzcontent)
+    return GzipFile(None, 'rb', fileobj=gzbuffer).read()
+
+
+class S3loader(BaseLoader):
+
+    def __init__(self, bucket, prefix='', s3=None):
         self.bucket = bucket
         self.prefix = prefix
+        self.s3 = s3 or boto3.client('s3')
         super(S3loader, self).__init__()
 
     def get_source(self, environment, template):
@@ -37,5 +52,9 @@ class S3loader(BaseLoader):
                 raise TemplateNotFound(template)
             else:
                 raise e
-        return (resp['Body'].read().decode('utf-8'), None, lambda: True)
+        if 'ContentEncoding' in resp and 'gzip' in resp['ContentEncoding']:
+            body = gunzip(resp['Body'].read())
+        else:
+            body = resp['Body'].read()
+        return (body.decode('utf-8'), None, lambda: True)
 
