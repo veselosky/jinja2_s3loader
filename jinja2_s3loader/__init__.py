@@ -21,9 +21,9 @@ from io import BytesIO
 import posixpath as path
 
 
-def gzip(content, filename=None, compresslevel=9, mtime=None):
+def gzip(content, filename=None, compresslevel=9):
     gzbuffer = BytesIO()
-    gz = GzipFile(filename, 'wb', compresslevel, gzbuffer, mtime)
+    gz = GzipFile(filename, 'wb', compresslevel, gzbuffer)
     gz.write(content)
     gz.close()
     return gzbuffer.getvalue()
