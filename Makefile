@@ -69,9 +69,10 @@ docs:
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-#release: clean
+release: dist
 #	python setup.py sdist upload
 #	python setup.py bdist_wheel upload
+	twine upload --config-file ~/.pypirc dist/*
 
 dist: clean
 	python setup.py sdist
